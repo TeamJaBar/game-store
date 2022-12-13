@@ -23,7 +23,6 @@ public class Ctrl {
 		View view = new View();
 
 		// 전체 게임 목록 출력
-		view.printGames(games);
 	}
 
 }
