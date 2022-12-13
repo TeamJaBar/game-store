@@ -1,9 +1,11 @@
 package model;
 
+import java.time.LocalDate;
+
 public class GameVO {
 	private int num;
 	private String title;
-	private String date;
+	private LocalDate date;
 	private int price;
 
 	public int getNum() {
@@ -22,11 +24,11 @@ public class GameVO {
 		this.title = title;
 	}
 
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -41,16 +43,5 @@ public class GameVO {
 	@Override
 	public String toString() {
 		return "GameVO [num=" + num + ", title=" + title + ", date=" + date + ", price=" + price + "]";
-	}
-
-	public GameVO() {
-
-	}
-
-	public GameVO(int num, String title, String date, int price) {
-		this.num = num;
-		this.title = title;
-		this.date = date;
-		this.price = price;
 	}
 }
