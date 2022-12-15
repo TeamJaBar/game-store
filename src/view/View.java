@@ -7,6 +7,7 @@ import java.util.Scanner;
 import model.GameVO;
 import model.MemberVO;
 
+//장바구니랑 라이브러리 중복값 메서드만들기!
 public class View {
 	private int aAction;// 관리자 모드
 	private int mAction;// 서비스 목록(member Menu)
@@ -17,7 +18,7 @@ public class View {
 	private Scanner sc;
 	private LocalDate today;
 
-	public View() {// 숫자는 쓰면서 수정
+	public View() {
 		sAction = 3;
 		aAction = 2;
 		mAction = 6;
@@ -157,13 +158,14 @@ public class View {
 			String price = String.format("%,d", games.get(i).getPrice());// 가격
 			// 전체 목록(구매하기)
 			// "num" 대신 "[출시 예정]"
+			today = LocalDate.now();
 			if (date.isAfter(today)) { // 출시일이 내일이후라면
 				System.out.println("[출시 예정] " + title + " | 출시: " + date + " | 가격: " + price + "원");
 			} else { // 출시일이 오늘 전이라면
 				System.out.println(num + ". " + title + " | 출시: " + date + " | 가격: " + price + "원");
 			}
 			// 보유중인 게임이라면
-			if (mvo.getCart().contains(games.get(i))) {
+			if (mvo.getLibrary().contains(games.get(i))) {
 				System.out.println("[보유중] " + title + " | 출시: " + date + " | ");
 			}
 		}
@@ -206,15 +208,31 @@ public class View {
 		}
 	}
 
-	public GameVO addCart() {// 장바구니 추가
-		System.out.print("추가할 게임번호 입력) ");
-		int num = sc.nextInt();// PK로 입력받기
-		GameVO vo = new GameVO();
-		vo.setNum(num);
-		return vo;
+	public int addCart(MemberVO mvo) {// 장바구니 추가
+		ArrayList<GameVO> cart = mvo.getCart();
+		ArrayList<GameVO> library = mvo.getLibrary();
+		int num;
+		while (true) {
+			System.out.print("추가할 게임번호 입력) ");
+			num = sc.nextInt();// PK로 입력받기
+			for (int i = 0; i < cart.size(); i++) {
+				if (cart.get(i).getNum() == num) {
+					System.out.println("이미 장바구니에 추가하셨습니다!");
+					continue;
+				}
+			}
+			for (int i = 0; i < library.size(); i++) {
+				if (library.get(i).getNum() == num) {
+					System.out.println("이미 보유중인 게임입니다!");
+					continue;
+				}
+			}
+			break;
+		}
+		return num;
 	}
 
-	public boolean deleteGame(ArrayList<GameVO> cart) {// 장바구니 전체 삭제하기
+	public boolean deleteCart(ArrayList<GameVO> cart) {// 장바구니 전체 삭제하기(이름 변경)
 		if (cart.size() == 0) {
 			System.out.println("장바구니가 비어있습니다!!");
 			return false;
@@ -277,8 +295,7 @@ public class View {
 		}
 	}
 
-	// 머니 충전
-	public MemberVO chargeMoney() {
+	public MemberVO chargeMoney() {// 머니 충전
 		int money;
 		while (true) {
 			System.out.print("얼마를 충전하실래요? ");
@@ -339,6 +356,31 @@ public class View {
 			}
 			System.out.println("범위를 확인하고 다시 입력해주세요!");
 		}
+	}
+
+	public GameVO getDeleteNum() {
+		System.out.println("삭제할 게임의 번호를 입력해주세요!: ");
+		int num = sc.nextInt();
+		GameVO vo = new GameVO();
+		vo.setNum(num);
+		return vo;
+	}
+
+	public boolean checkGame(ArrayList<GameVO> games) {
+		if (games.size() == 0) {
+			System.out.println("삭제할 게임이 없습니다.");
+			return false;
+		}
+		System.out.println("정말로 삭제하시겠습니까?");
+		System.out.println("삭제를 원하시면 Y를 입력해 주세요.");
+		String ans = sc.next();
+		if (ans.equals("Y")) {
+			System.out.println("삭제가 완료되었습니다.");
+			return true;
+		}
+		System.out.println("삭제가 되지 않았습니다. 다시 입력해주세요.");
+		return false;
+
 	}
 
 }
