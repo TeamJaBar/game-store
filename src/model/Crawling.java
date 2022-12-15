@@ -39,7 +39,7 @@ public class Crawling {
 			String title = itr.next().text();
 			gvo.setTitle(title);
 
-			// "발매" 떼고 공백 없애고 날짜 저장 
+			// "발매" 떼고 공백 없애고 날짜 저장 "발매 22.11.22" 
 			String date = itr2.next().text().replace("발매", "").trim(); // "22.11.22"
 			int year = Integer.parseInt("20" + date.split("\\.")[0]); // 2022
 			int month = Integer.parseInt(date.split("\\.")[1]); // 11

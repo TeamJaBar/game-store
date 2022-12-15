@@ -34,21 +34,21 @@ public class GameDAO {
 		return true;
 	}
 
-   // R : 전체 목록, 검색
-   public ArrayList<GameVO> selectAll(GameVO gvo) {
-      if (gvo == null) {
-         return games; // 전체 목록 넘기기
-      } 
-      
-      //검색 결과 데이터 넘기기
-      ArrayList<GameVO> res = new ArrayList<GameVO>();
-      for (GameVO g : games) { // games를 순회하며
-         if (g.getTitle().contains(gvo.getTitle())) { // 입력한 단어가 포함된 타이틀명이 있다면
-            res.add(g); // 추가
-         }
-      }
-      return res;
-   }
+	// R : 전체 목록, 검색
+	public ArrayList<GameVO> selectAll(GameVO gvo) {
+		if (gvo == null) {
+			return games; // 전체 목록 넘기기
+		}
+
+		// 검색 결과 데이터 넘기기
+		ArrayList<GameVO> res = new ArrayList<GameVO>();
+		for (GameVO g : games) { // games를 순회하며
+			if (g.getTitle().contains(gvo.getTitle())) { // 입력한 단어가 포함된 타이틀명이 있다면
+				res.add(g); // 추가
+			}
+		}
+		return res;
+	}
 
 	// R : 출시예정인 게임
 	public ArrayList<GameVO> selectUpComming(GameVO gvo) {
@@ -62,6 +62,18 @@ public class GameDAO {
 			}
 		}
 		return res;
+	}
+
+	// R : 게임 찾아오기
+	public GameVO selectOne(GameVO gvo) {
+		for (int i = 0; i < games.size(); i++) {
+			if (games.get(i).getNum() == gvo.getNum()) {
+				System.out.println("\t로그 : 게임 있음");
+				return games.get(i);
+			}
+		}
+		System.out.println("\t로그 : 게임 없음");
+		return null;
 	}
 
 	// D : 게임 삭제
