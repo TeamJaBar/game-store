@@ -19,10 +19,10 @@ public class MemberDAO {
 			mvo.setLibrary(new ArrayList<GameVO>());
 			members.add(mvo); // 멤버 어레이리스트에 추가
 		} catch (Exception e) {
-			System.out.println("\t로그: 회원가입 실패");
+			// System.out.println("\t로그: 회원가입 실패");
 			return false;
 		}
-		System.out.println("\t로그: 회원가입 성공");
+		// System.out.println("\t로그: 회원가입 성공");
 		return true;
 	}
 
@@ -30,11 +30,11 @@ public class MemberDAO {
 	public boolean checkId(MemberVO mvo) {
 		for (int i = 0; i < members.size(); i++) {
 			if (members.get(i).getId().equals(mvo.getId())) { // 이미 있는 아이디인 경우
-				System.out.println("\t로그: 아이디 중복");
+				// System.out.println("\t로그: 아이디 중복");
 				return false;
 			}
 		}
-		System.out.println("\t로그: 아이디 중복 아님");
+		// System.out.println("\t로그: 아이디 중복 아님");
 		return true;
 	}
 
@@ -42,30 +42,25 @@ public class MemberDAO {
 	public MemberVO signIn(MemberVO mvo) {
 		for (int i = 0; i < members.size(); i++) {
 			if (members.get(i).getId().equals(mvo.getId())) { // 아이디 체크
-				System.out.println("\t로그: 아이디 있음");
+				// System.out.println("\t로그: 아이디 있음");
 				if (members.get(i).getPw().equals(mvo.getPw())) { // 비밀번호 체크
-					System.out.println("\t로그: 로그인 성공");
+					// System.out.println("\t로그: 로그인 성공");
 					return members.get(i); // 해당 멤버 객체주소 리턴
 				}
-				System.out.println("\t로그: 비밀번호 틀림");
+				// System.out.println("\t로그: 비밀번호 틀림");
 			}
 		}
-		System.out.println("\t로그: 로그인 실패");
+		// System.out.println("\t로그: 로그인 실패");
 		return null;
-	}
-
-	// R : 장바구니목록 추가
-	public ArrayList<GameVO> selectCart(MemberVO mvo) {
-		return mvo.getCart();
 	}
 
 	// C : 장바구니 추가
 	public boolean addCart(MemberVO mvo, GameVO gvo) {
 		try {
 			mvo.getCart().add(gvo);
-			System.out.println("\t로그: 장바구니 추가 성공");
+			// System.out.println("\t로그: 장바구니 추가 성공");
 		} catch (Exception e) {
-			System.out.println("\t로그: 장바구니 추가 실패");
+			// System.out.println("\t로그: 장바구니 추가 실패");
 			return false;
 		}
 		return true;
@@ -74,7 +69,7 @@ public class MemberDAO {
 	// 장바구니에 있는 게임들의 총 가격
 	public int getTotalPrice(MemberVO mvo) {
 		if (mvo.getCart().size() == 0) { // 장바구니가 비어있다면
-			System.out.println("\t로그: 장바구니 비어있음");
+			// System.out.println("\t로그: 장바구니 비어있음");
 			return 0;
 		}
 
@@ -82,7 +77,7 @@ public class MemberDAO {
 		for (int i = 0; i < mvo.getCart().size(); i++) {
 			totalPrice += mvo.getCart().get(i).getPrice(); // 카트에 담긴 게임 가격 더하기
 		}
-		System.out.println("\t로그: 총 가격 계산 성공");
+		// System.out.println("\t로그: 총 가격 계산 성공");
 		return totalPrice;
 	}
 
@@ -95,10 +90,10 @@ public class MemberDAO {
 				mvo.getLibrary().add(mvo.getCart().get(i)); // 라이브러리에 구매한 게임 추가
 			}
 			mvo.getCart().clear(); // 장바구니 비우기
-			System.out.println("\t로그: 보유금 - 총 가격");
+			// System.out.println("\t로그: 보유금 - 총 가격");
 			return true;
 		}
-		System.out.println("\t로그: 보유금 부족"); // 보유머니 부족할시 구매 실패
+		// System.out.println("\t로그: 보유금 부족"); //보유머니 부족할시 구매 실패
 		return false;
 	}
 
@@ -113,11 +108,11 @@ public class MemberDAO {
 		for (int i = 0; i < members.size(); i++) {
 			if (members.get(i).getId().equals(mvo.getId())) {
 				members.get(i).setMoney(members.get(i).getMoney() + mvo.getMoney()); // 원래 보유하고있던 머니에 새로 입력받은 머니 추가하기
-				System.out.println("\t로그: 머니 충전 성공");
+				// System.out.println("\t로그: 머니 충전 성공");
 				return true;
 			}
 		}
-		System.out.println("\t로그: 머니 충전 실패");
+		// System.out.println("\t로그: 머니 충전 실패");
 		return false;
 	}
 
