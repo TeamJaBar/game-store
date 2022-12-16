@@ -26,9 +26,9 @@ public class GameDAO {
 		try {
 			gvo.setNum(PK++);
 			games.add(gvo);
-			System.out.println("\t로그 : 게임 추가 성공");
+			// System.out.println("\t로그 : 게임 추가 성공");
 		} catch (Exception e) {
-			System.out.println("\t로그 : 게임 추가 실패");
+			// System.out.println("\t로그 : 게임 추가 실패");
 			return false;
 		}
 		return true;
@@ -68,11 +68,11 @@ public class GameDAO {
 	public GameVO selectOne(GameVO gvo) {
 		for (int i = 0; i < games.size(); i++) {
 			if (games.get(i).getNum() == gvo.getNum()) {
-				System.out.println("\t로그 : 게임 있음");
+				// System.out.println("\t로그 : 게임 있음");
 				return games.get(i);
 			}
 		}
-		System.out.println("\t로그 : 게임 없음");
+		// System.out.println("\t로그 : 게임 없음");
 		return null;
 	}
 
@@ -81,11 +81,11 @@ public class GameDAO {
 		for (int i = 0; i < games.size(); i++) {
 			if (games.get(i).getNum() == gvo.getNum()) {
 				games.remove(i);
-				System.out.println("\t로그: 게임 삭제 성공");
+				// System.out.println("\t로그: 게임 삭제 성공");
 				return true;
 			}
 		}
-		System.out.println("\t로그: 게임 삭제 실패");
+		// System.out.println("\t로그: 게임 삭제 실패");
 		return false;
 	}
 
