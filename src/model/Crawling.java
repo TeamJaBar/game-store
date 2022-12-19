@@ -10,7 +10,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class Crawling {
-	public void sample(GameDAO gdao) { // gdao: App에서 사용하는 model
+	private static final int NUM = 10; // 크롤링 하고 싶은 게임의 개수 - 상수화
+
+	public static void sample(GameDAO gdao) { // gdao: App에서 사용하는 model
+
 		// 타겟 사이트
 		final String URL = "https://store.nintendo.co.kr/games?game_category=43%2C15%2C19%2C23&publisher=14";
 		Document doc = null;
@@ -35,7 +38,8 @@ public class Crawling {
 		System.out.println("\t로그: 크롤링 시작");
 		int i = 0;
 		while (itr.hasNext()) {
-			if (i > 2)	break;
+			if (i >= NUM)
+				break;
 			GameVO gvo = new GameVO();
 
 			// 타이틀 저장
@@ -58,7 +62,7 @@ public class Crawling {
 			// 원 기호와 쉼표 ""로 대체 후 가격 저장
 			String price = itr3.next().text().replace("₩", "").replace(",", ""); // "100000"
 			gvo.setPrice(Integer.parseInt(price)); // 문자열 형변환
-			
+
 			// games에 추가
 			gdao.addGame(gvo);
 			i++;
