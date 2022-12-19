@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import model.Crawling;
 import model.GameDAO;
 import model.GameVO;
@@ -23,10 +25,6 @@ public class Ctrl {
 		memberModel = new MemberDAO();
 		gameModel = new GameDAO();
 		view = new View();
-
-		// 크롤링 데이터 gmaeModel에 추가
-		Crawling crawling = new Crawling();
-		crawling.sample(gameModel);
 	}
 
 	// 3. 관리자UI 출력(게임삭제, 로그아웃)▼--------------------------------
@@ -35,9 +33,14 @@ public class Ctrl {
 			view.printAdminMenu();
 			// 3.1 게임삭제
 			if (view.action == 1) {
-				view.printGame(gameModel.selectAll(null));
-				GameVO gvo = new GameVO();
-				gvo.setNum(view.getDeleteNum(gameModel.selectAll(null)).getNum());
+				ArrayList<GameVO> games = gameModel.selectAll(null);
+				if (games.isEmpty()) { // 게임 데이터가 없다면
+					view.gameisEmpty();
+					continue;
+				}
+
+				view.printGame(games);
+				GameVO gvo = view.getDeleteNum();
 				gvo = gameModel.selectOne(gvo);
 				if (gvo == null) {
 					view.checkFalse();
@@ -78,14 +81,20 @@ public class Ctrl {
 						view.cart(mvo);
 						// 2.3.2 장바구니 추가
 					} else if (view.action == 2) {
-						view.printGame(gameModel.selectAll(null), mvo);
+						ArrayList<GameVO> games = gameModel.selectAll(null);
+						if (games.isEmpty()) { // 게임 데이터가 없다면
+							view.gameisEmpty();
+							continue;
+						}
+						// 게임데이터가 있다면
+						view.printGame(games, mvo);
 						GameVO vo = new GameVO();
 						vo.setNum(view.addCart(mvo));
 						if (gameModel.selectOne(vo) != null) {
 							memberModel.addCart(mvo, gameModel.selectOne(vo));
 							view.checkTrue();
 							continue;
-						} // 아니면
+						}
 						view.checkFalse();
 						// 2.3.3 전체삭제
 					} else if (view.action == 3) {
@@ -142,10 +151,13 @@ public class Ctrl {
 				break;
 			}
 		}
+
 	}
 
 	// 1. 시작UI 출력(로그인, 회원가입,종료하기)▼------------------------------------------
 	public void startApp() {
+		// 크롤링 데이터 gmaeModel에 추가
+		Crawling.sample(gameModel);
 		while (true) {
 			view.printStart();
 			// 1.1 회원가입
@@ -155,7 +167,7 @@ public class Ctrl {
 				while (true) {
 					mvo.setId(view.getId());
 					if (!memberModel.checkId(mvo)) {
-						view.loginInfo();
+						view.idInfo();
 						continue;
 					}
 					break;

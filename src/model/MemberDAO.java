@@ -97,12 +97,6 @@ public class MemberDAO {
 		return false;
 	}
 
-	// 장바구니 비우기
-	public boolean clearCart(MemberVO mvo) {
-		mvo.getCart().clear();
-		return true;
-	}
-
 	// 머니 충전 U
 	public boolean chargeMoney(MemberVO mvo) {
 		for (int i = 0; i < members.size(); i++) {
@@ -121,12 +115,13 @@ public class MemberDAO {
 		return mvo.getLibrary();
 	}
 
-	/*
-	 * 컨트롤에서 gvo.setNum(view.getDeleteNum().getNum()) gvo =
-	 * gameModel.selectOne(gvo); memberModel.deleteGameInCart(deleteGvo);
-	 * gameModel.deleteGame(gvo);
-	 */
-	// 삭제된 게임이 장바구니에 담겨있을 경우 빼주기
+	// D : 장바구니 비우기
+	public boolean clearCart(MemberVO mvo) {
+		mvo.getCart().clear();
+		return true;
+	}
+
+	// D : 삭제된 게임이 장바구니에 담겨있을 경우 빼주기
 	public boolean deleteGameInCart(GameVO gvo) {
 		for (int i = 0; i < members.size(); i++) {
 			ArrayList<GameVO> cart = members.get(i).getCart();

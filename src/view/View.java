@@ -35,7 +35,7 @@ public class View {
 	// public void printChargeResult(MemberVO mvo) 추가
 	// public void buyTrue()->public void buyTrue(MemberVO mvo, int totalPrice)변경
 	// ver.1216 - public void signUp() 추가
-	//          - 회원가입시 비밀번호 이중체크 추가
+	// - 회원가입시 비밀번호 이중체크 추가
 
 	public View() {
 		sAction = 3;
@@ -89,11 +89,6 @@ public class View {
 		System.out.println("  아이디나 비밀번호를 다시 확인해 주세요!");
 	}
 
-	public void loginInfo() {// 아이디 중복
-		System.out.println("  이 아이디는 이미 다른 분이 사용 중이에요!");
-		System.out.println("  다른 아이디를 입력해 주세요!");
-	}
-
 	public void logOut() {// 로그아웃 했을때
 		System.out.print("\n  🎮 LOGOUT 🎮 \n  ");
 		try {
@@ -119,12 +114,12 @@ public class View {
 
 	public String getPw() {// 회원가입 pw
 		String pw;
-		while(true) {
+		while (true) {
 			System.out.print("PW: ");
 			pw = sc.next();
 			System.out.print("PW 확인: ");
 			String check = sc.next();
-			if(check.equals(pw)) {
+			if (check.equals(pw)) {
 				break;
 			}
 			System.out.println("  일치하지 않습니다.. 다시 입력해주세요!\n");
@@ -136,6 +131,11 @@ public class View {
 		System.out.print("NAME: ");
 		String name = sc.next();
 		return name;
+	}
+
+	public void idInfo() {// 아이디 중복
+		System.out.println("  이 아이디는 이미 다른 분이 사용 중이에요!");
+		System.out.println("  다른 아이디를 입력해 주세요!");
 	}
 
 	public void checkTrue() {// 성공했을때
@@ -183,6 +183,10 @@ public class View {
 	}
 
 	public void upcomingGame(ArrayList<GameVO> games) {// 출시예정 게임 목록
+		if (games.isEmpty()) {
+			System.out.println("\n데이터가 없습니다...");
+			return;
+		}
 		System.out.printf("\n%-4s  %-15s %-9s %-60s\n", "No.", "출시일", "가격 (￦)", "TITLE");
 		System.out.println("--------------------------------------------------------------------------");
 		for (int i = 0; i < games.size(); i++) {
@@ -194,7 +198,15 @@ public class View {
 		}
 	}
 
+	public void gameisEmpty() {
+		System.out.println("\n  게임이 없습니다...");
+	}
+
 	public void printGame(ArrayList<GameVO> games, MemberVO mvo) {// 전체게임목록(출시예정게임 포함)
+		if (games.isEmpty()) {
+			System.out.println("\n데이터가 없습니다...");
+			return;
+		}
 		System.out.printf("\n%-8s  %-15s %-9s %-60s\n", "No.", "출시일", "가격 (￦)", "TITLE");
 		System.out.println("--------------------------------------------------------------------------");
 		for (int i = 0; i < games.size(); i++) {
@@ -229,6 +241,10 @@ public class View {
 
 	// 전체게임목록오버로딩
 	public void printGame(ArrayList<GameVO> games) {
+		if (games.isEmpty()) {
+			System.out.println("\n데이터가 없습니다...");
+			return;
+		}
 		System.out.printf("\n%-4s  %-15s %-9s %-60s\n", "No.", "출시일", "가격 (￦)", "TITLE");
 		System.out.println("--------------------------------------------------------------------------");
 		for (int i = 0; i < games.size(); i++) {
@@ -236,13 +252,8 @@ public class View {
 			String title = games.get(i).getTitle();// 타이틀
 			LocalDate date = games.get(i).getDate();// 날짜
 			String price = String.format("%,d", games.get(i).getPrice());// 가격
-			// 전체 목록(구매하기)
-			// "num" 대신 "[출시 예정]"
 
-			today = LocalDate.now();
 			System.out.printf("%-5s %-16s %-10s %-60s\n", num, date, price, title);
-			// System.out.println(num + ". " + title + " | 출시: " + date + " | 가격: " + price
-			// + "원");
 		}
 	}
 
@@ -287,7 +298,9 @@ public class View {
 		int num;
 		while (true) {
 			try {
-				System.out.print("\n추가할 게임번호를 입력해주세요: ");
+				System.out.println("게임을 추가하려면 게임 번호를");
+				System.out.println("돌아가려면 0을 입력하세요..");
+				System.out.print("\n입력: ");
 				num = sc.nextInt();// PK로 입력받기
 				break;
 			} catch (Exception e) {
@@ -399,11 +412,11 @@ public class View {
 			return;
 		}
 		System.out.println("보유 중인 게임을 보여드릴게요!");
-		System.out.println("\n..........🎮 보유 게임 🎮..........");
+		System.out.println("\n................🎮 보유 게임 🎮................\n");
 		for (GameVO v : library) {// 결제 완료한 사용자가 보유중인 게임 출력
 			System.out.println(" [" + v.getNum() + "] " + v.getTitle());
 		}
-		System.out.println("\n...............................\n");
+		System.out.println("\n...........................................\n");
 	}
 
 	// 관리자모드 메뉴
@@ -428,12 +441,19 @@ public class View {
 		}
 	}
 
-	public GameVO getDeleteNum(ArrayList<GameVO> games) {// 관리자 모드 게임 삭제하기
-		if (games.size() == 0) {
-			System.out.println("  삭제할 게임이 없습니다.");
+	public GameVO getDeleteNum() { // 관리자 모드 게임 삭제하기
+		int num;
+		while (true) {
+			try {// 유효성 검사
+				System.out.print("\n삭제할 게임의 번호를 입력해주세요!: ");
+				num = sc.nextInt();
+			} catch (Exception e) {
+				sc.nextLine();
+				System.out.println("  유효하지않은 입력입니다.");
+				continue;
+			}
+			break;
 		}
-		System.out.print("\n삭제할 게임의 번호를 입력해주세요!: ");
-		int num = sc.nextInt();
 		GameVO gvo = new GameVO();
 		gvo.setNum(num);
 		return gvo;
