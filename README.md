@@ -26,5 +26,5 @@ MVC 디자인 패턴에 대해서 더 자세히, 웹 크롤링이 어떠한 방�
 
 # [Jsoup을 이용한 닌텐도 온라인 스토어 크롤링 설명서](https://url.kr/d9ks7q)
 
-# ERD
-![ERD](https://user-images.githubusercontent.com/104343387/208614425-cda7b154-09a0-425e-986d-c902c896a186.png)
+# Class Diagram
+![Class Diagram](https://user-images.githubusercontent.com/104343387/208614425-cda7b154-09a0-425e-986d-c902c896a186.png)
